@@ -3,12 +3,12 @@ import ActionsCrud from '../../../components/ActionsCrud/ActionsCrud'
 import { ActionsCrudButtons } from '../../../components/ActionsCrud/ActionsCrudStyles'
 import Button from '../../../components/Button/Button'
 import { FiPlus } from 'react-icons/fi'
-import { IoCheckmark, IoClose, IoTrashOutline } from 'react-icons/io5'
+import { IoCheckmark, IoClose, IoShieldHalf, IoTrashOutline } from 'react-icons/io5'
 import { LuDownload, LuUpload } from 'react-icons/lu'
 import Table from '../../../components/Table/Table'
 import { ContentTitle } from '../../../components/Content/ContentStyles'
 import { HiOutlineEllipsisVertical } from 'react-icons/hi2'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ModalCreate from '../../../components/Modals/ModalCreate/ModalCreate'
 import { ModalFormInputContainer } from '../../../components/Modals/ModalsStyles'
 import Select from '../../../components/Select/Select'
@@ -18,10 +18,62 @@ import Overlay from '../../../components/Overlay/Overlay'
 import BasicFilterDemo from '../../../components/Table/Table'
 import { dataEquipos, dataEquiposColumns } from '../../../Data/Equipos/DataEquipos'
 import { dataCategorias } from '../../../Data/Categorias/Categorias'
+import Axios from 'axios'
+import { URL } from '../../../utils/utils'
 
 const Equipos = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [equiposList, setEquipos] = useState([])
+    const [categoriasList, setCategorias] = useState([])
+
+    const [nombre, setNombre] = useState("");
+    const [id_categoria, setIdCategoria] = useState("");
+    const [img, setImg] = useState("");
+    const [descripcion, setDescripcion] = useState("");
+    const crearEquipo = () => {
+        if (nombre != "" && id_categoria != "") {
+            Axios.post(`${URL}/admin/crear-equipo`, {
+                nombre,
+                id_categoria,
+                descripcion,
+                img
+            }).then(()=>{
+                alert("Categoria registrada")
+            })
+            closeCreateModal()
+            getCategorias()
+        } else {
+            alert("Completa los campos")
+        }
+    }
+
+    const getEquipos = () => {
+        Axios.get(`${URL}/admin/get-equipos`)
+            .then((response) => {
+                setEquipos(response.data);
+                console.log(equiposList);
+            })
+            .catch((error) => {
+                console.error("Error al obtener los datos de equipos:", error);
+            });
+    };
+
+    const getCategorias = () => {
+        Axios.get(`${URL}/admin/get-categorias`)
+            .then((response) => {
+                setCategorias(response.data);
+                console.log(equiposList);
+            })
+            .catch((error) => {
+                console.error("Error al obtener los datos de equipos:", error);
+            });
+    };
+
+    useEffect(() => {
+        getEquipos();
+        getCategorias()
+    }, []); // Ejecuta solo una vez cuando el componente se monta
 
     const openCreateModal = () => {
         setIsCreateModalOpen(true);
@@ -66,72 +118,7 @@ const Equipos = () => {
                     </Button>
                 </ActionsCrudButtons>
             </ActionsCrud>
-            {/* <Table 
-                thead={
-                    <tr>
-                        <th className='th-ellipsis'></th>
-                        <th className='th-checkbox'>
-                            <input className='checkbox' type="checkbox" name="" id="" />
-                        </th>
-                        <th className='th-team'>Equipo</th>
-                        <th>Categoria</th>
-                        <th>Descripcion</th>
-                    </tr>
-                }
-                tbody={
-                    <>
-                        <tr>
-                            <td>
-                                <HiOutlineEllipsisVertical className='ellipsis'/>
-                            </td>
-                            <td>
-                                <input className='checkbox' type="checkbox" name="" id="" />
-                            </td>
-                            <td>
-                                <div className='team'>
-                                    <img src={"/public/Escudos/lapeste.png"} />
-                                    La Peste
-                                </div>
-                            </td>
-                            <td>Serie A</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <HiOutlineEllipsisVertical className='ellipsis'/>
-                            </td>
-                            <td>
-                                <input className='checkbox' type="checkbox" name="" id="" />
-                            </td>
-                            <td>
-                                <div className='team'>
-                                    <img src={"/public/Escudos/celta-de-vino.png"} />
-                                    Celta de Vino
-                                </div>
-                            </td>
-                            <td>Serie A</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <HiOutlineEllipsisVertical className='ellipsis'/>
-                            </td>
-                            <td>
-                                <input className='checkbox' type="checkbox" name="" id="" />
-                            </td>
-                            <td>
-                                <div className='team'>
-                                    <img src={"/public/Escudos/pura-quimica.png"} />
-                                    Pura Quimica
-                                </div>
-                            </td>
-                            <td>Serie A</td>
-                            <td>-</td>
-                        </tr>
-                    </>
-                }
-            /> */}
-            <Table data={dataEquipos} dataColumns={dataEquiposColumns} arrayName={"Equipos"}/>
+            <Table data={equiposList} dataColumns={dataEquiposColumns} arrayName={"Equipos"}/>
             {
                 isCreateModalOpen && <>
                     <ModalCreate initial={{ opacity: 0 }}
@@ -145,7 +132,7 @@ const Equipos = () => {
                                 <IoClose/>
                                 Cancelar
                             </Button>
-                            <Button color={"success"} onClick={closeCreateModal}>
+                            <Button color={"success"} onClick={crearEquipo}>
                                 <IoCheckmark/>
                                 Guardar
                             </Button>
@@ -154,23 +141,29 @@ const Equipos = () => {
                     form={ <>
                             <ModalFormInputContainer>
                                 Nombre
-                                <Input type='text' placeholder="Escriba el nombre..." />
+                                <Input type='text' placeholder="Escriba el nombre..."
+                                onChange={(event) => { setNombre(event.target.value)}}/>
                             </ModalFormInputContainer>
                             <ModalFormInputContainer>
                                 Imagen
-                                <Input type='text' placeholder="example.png" />
+                                <Input type='text' placeholder="example.png"
+                                onChange={(event) => { setImg(event.target.value)}} />
                             </ModalFormInputContainer>
                             <ModalFormInputContainer>
                                 Categoría
                                 <Select
-                                    data={dataCategorias}
-                                    placeholder="Seleccionar equipo"
+                                    data={categoriasList}
+                                    placeholder="Seleccionar categoría"
+                                    icon={<IoShieldHalf className='icon-select'/>}
+                                    id_={"id_categoria"}
+                                    onChange={(event) => { setIdCategoria(event.target.value)}}
                                 >
                                 </Select>
                             </ModalFormInputContainer>
                             <ModalFormInputContainer>
                                 Añadir descripción (Opcional)
-                                <Input type='text' placeholder="Escriba aqui..." />
+                                <Input type='text' placeholder="Escriba aqui..."
+                                onChange={(event) => { setDescripcion(event.target.value)}} />
                             </ModalFormInputContainer>
                         </>
                     }

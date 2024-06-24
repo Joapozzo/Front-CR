@@ -6,7 +6,7 @@ export const ButtonWrapper = styled.button`
     justify-content: center;
     padding: 8px 16px;
     gap: 6px;
-    background: ${({ bg }) => `var(--${bg})`};
+    background: ${({ $bg }) => `var(--${$bg})`};
     color: ${({ color }) => `var(--${color})`};
     border: none;
     border-radius: 10px;

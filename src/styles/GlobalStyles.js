@@ -265,4 +265,31 @@ export const GlobalStyles = createGlobalStyle`
             }
         }
     }
+
+    .p-toast {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        svg {
+            font-size: 10px;
+        }
+    }
+
+    .p-datatable.p-component.p-datatable-selectable.p-datatable-responsive-scroll {
+        background-color: var(--gray-300) !important;
+    }
+
+    .p-paginator-bottom {
+        background-color: var(--gray-300);
+
+        .p-paginator-page {
+            border: none;
+        }
+
+        .p-paginator-page.p-highlight {
+            border: 1px solid var(--green);
+        }
+    }
+
 `

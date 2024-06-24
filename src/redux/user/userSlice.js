@@ -14,7 +14,7 @@ const INITIAL_STATE = {
         equipoFav: ''
     },
     currentUser: {
-        isLog: '',
+        isLog: false,
         dni: '',
         nombre: '',
         equipo: '',
@@ -50,7 +50,11 @@ const userSlice = createSlice({
             state.newUser.equipoFav = action.payload;
         },
         setLogCurrentUser: (state, action) => {
-            state.currentUser.isLog = action.payload;
+            if (state.currentUser) { // Verificar que currentUser no sea null
+                state.currentUser.isLog = action.payload;
+            } else {
+                console.error('currentUser es null');
+            }
         },
     },
 });

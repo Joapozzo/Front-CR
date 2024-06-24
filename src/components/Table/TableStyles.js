@@ -2,7 +2,7 @@ import { DataTable } from "primereact/datatable";
 import styled from "styled-components";
 
 export const TableContainerStyled = styled(DataTable)`
-    background-color: var(--gray-300);
+    background-color: var(--gray-300) !important;
     border-radius: 10px;
     overflow: hidden;
     border-collapse: collapse;
@@ -10,21 +10,25 @@ export const TableContainerStyled = styled(DataTable)`
     height: fit-content;
     font-size: 14px;
 
-
     td, th {
         text-align: left;
         overflow: hidden; /* Oculta el contenido que desborda */
         text-overflow: ellipsis; /* Muestra puntos suspensivos si el contenido desborda */
         padding: 15px 20px; /* Espaciado interno de las celdas */
         min-width: fit-content;
+        background-color: var(--gray-300) !important;
         
     }
     th {
         color: var(--gray-200);
-        padding: 15px 20px 10px 20px;
-
-        > .p-column-header-content {
+        border: none;
+        border-bottom: 1px solid var(--gray-200);
+        &.p-sortable-column .p-column-header-content {
             gap: 10px;
+
+            svg {
+                color: var(--gray-200);
+            }
         }
 
         &.p-highlight {
@@ -41,9 +45,11 @@ export const TableContainerStyled = styled(DataTable)`
     tbody tr {
         border-bottom: 1px solid var(--gray-200) !important;
     }
+
     tr:nth-last-child(1) {
         border: none;
     }
+
     input.checkbox {
         appearance: none; /* Anular los estilos por defecto del navegador */
         width: 14px;
@@ -157,4 +163,26 @@ export const TableContainerStyled = styled(DataTable)`
     }
 
     
+
+    .p-checkbox .p-checkbox-box {
+        background-color: var(--gray-300);
+        border: 1px solid var(--green);
+    }
+
+    .p-checkbox.p-highlight .p-checkbox-box {
+        border-color: var(--green);
+        background: var(--green)
+    }
+
+    tr.p-highlight {
+        background-color: yellow;
+    }
+
+    tr.p-selectable-row[data-p-highlight="true"] td {
+        background-color: rgba(42, 209, 116, 0.3) !important;
+        color: var(--green) !important;
+        border-bottom: 1px solid var(--green);
+        transition: all .2s ease-in-out;
+    }
+
 `

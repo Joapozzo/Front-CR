@@ -43,7 +43,7 @@ const Temporadas = () => {
             año != "" &&
             sede != "" 
         ) {
-            Axios.post(`${URL}/crear-temporada`, {
+            Axios.post(`${URL}/admin/crear-temporada`, {
                 torneo,
                 categoria,
                 año,
@@ -61,7 +61,7 @@ const Temporadas = () => {
 
     const [temporadasList, setTemporadas] = useState([])
     const getTemporadas = () => {
-        Axios.get(`${URL}/temporadas`).then((response)=>{
+        Axios.get(`${URL}/admin/get-temporadas`).then((response)=>{
             setTemporadas(response.data)
         })
     }

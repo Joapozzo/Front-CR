@@ -30,7 +30,7 @@ const Categorias = () => {
 
 
     const getCategorias =  () => {
-        axios.get(`${URL}/categorias`)
+        axios.get(`${URL}/admin/get-categorias`)
         .then((response)=>{
             setCategorias(response.data)
         })
@@ -41,7 +41,7 @@ const Categorias = () => {
 
     const add = () => {
         if (nombre !== "") {
-            axios.post(`${URL}/crear-categoria`, {
+            axios.post(`${URL}/admin/crear-categoria`, {
                 nombre,
                 descripcion
             }).then(()=>{

@@ -31,7 +31,7 @@ const Torneos = () => {
     const [torneosList, setTorneos] = useState([])
     const add = () => {
         if (nombre != "") {
-            Axios.post(`${URL}/crear-torneo`, {
+            Axios.post(`${URL}/admin/crear-torneo`, {
                 nombre,
                 descripcion
             }).then(()=>{
@@ -45,7 +45,7 @@ const Torneos = () => {
     }
 
     const getTorneos = () => {
-        Axios.get(`${URL}/torneos`).then((response)=>{
+        Axios.get(`${URL}/admin/get-torneos`).then((response)=>{
             setTorneos(response.data)
         })
     }
