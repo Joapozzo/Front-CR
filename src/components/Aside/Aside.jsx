@@ -136,6 +136,7 @@ const Aside = ({className}) => {
                                     <SubMenuItem to={"/admin/temporadas/torneos"} isActive={isActiveTemporadas}>Torneos</SubMenuItem>
                                     <SubMenuItem to={"/admin/temporadas/sedes"} isActive={isActiveTemporadas}>Sedes</SubMenuItem>
                                     <SubMenuItem to={"/admin/temporadas/años"} isActive={isActiveTemporadas}>Años</SubMenuItem>
+                                    <SubMenuItem to={"/admin/temporadas/divisiones"} isActive={isActiveTemporadas}>Divisiones</SubMenuItem>
                                 </SubMenu>
                             </motion.div> 
                         )}

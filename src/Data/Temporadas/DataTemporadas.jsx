@@ -3,6 +3,7 @@ export const dataTemporadasColumns = [
     { field: "categoria", header: "Categoria" },
     { field: "año", header: "Año" },
     { field: "sede", header: "Sede" },
+    { field: "division", header: "Division" },
     { field: "descripcion", header: "Descripcion" }
 ];  
 

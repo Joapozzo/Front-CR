@@ -1,12 +1,11 @@
 export const dataUsuariosColumns = [
     { field: 'dni', header: 'DNI' },
-    { field: 'nombre', header: 'Nombre' },
+    { field: 'usuario', header: 'Nombre' },
     { field: 'nacimiento', header: 'Nacimiento' },
     { field: 'telefono', header: 'Telefono' },
-    { field: 'email', header: 'Email' },
     { field: 'rol', header: 'Rol' },
     { field: 'estado', header: 'Estado' },
-    { field: 'equipoFav', header: 'Equipo FAV' }
+    { field: 'equipo', header: 'Equipo FAV' }
 ];
 
 export const dataUsuarios = [

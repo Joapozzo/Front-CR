@@ -24,22 +24,23 @@ import ModalImport from '../../../components/Modals/ModalImport/ModalImport';
 import { fetchAños } from '../../../redux/ServicesApi/añosSlice';
 import { dataSedesColumns } from '../../../Data/Sedes/Sedes';
 import { fetchSedes } from '../../../redux/ServicesApi/sedesSlice';
-import { fetchTorneos } from '../../../redux/ServicesApi/torneosSlice';
-import { dataTorneosColumns } from '../../../Data/Torneos/DataTorneos';
+import { fetchCategorias } from '../../../redux/ServicesApi/categoriasSlice';
+import { dataDivisionesColumns } from '../../../Data/Divisiones/Divisiones';
+import { fetchDivisiones } from '../../../redux/ServicesApi/divisionesSlice';
 
-const Torneos = () => {
+const Divisiones = () => {
     const dispatch = useDispatch();
 
     // Constantes del modulo
-    const articuloSingular = "el"
-    const articuloPlural = "los"
-    const id = "id_torneo"
-    const plural = "torneos"
-    const singular = "torneo"
-    const get = "get-torneos"
-    const create = "crear-torneo"
-    const importar = "importar-torneos"
-    const eliminar = "delete-torneo"
+    const articuloSingular = "la"
+    const articuloPlural = "las"
+    const id = "id_division"
+    const plural = "divisiones"
+    const singular = "division"
+    const get = "get-divisiones"
+    const create = "crear-division"
+    const importar = "importar-divisiones"
+    const eliminar = "delete-division"
 
     // Estados para manejar la apertura y cierre de los modales
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -61,7 +62,7 @@ const Torneos = () => {
     const [descripcion, setDescripcion] = useState("");
 
     // Estado del el/los Listado/s que se necesitan en el modulo
-    const torneosList = useSelector((state) => state.torneos.data);
+    const divisionesList = useSelector((state) => state.divisiones.data);
 
     // Estado de las filas seleccionadas para eliminar
     const selectedRows = useSelector(state => state.selectedRows.selectedRows);
@@ -96,7 +97,7 @@ const Torneos = () => {
                         .then(() => {
                             toast.success(`Se importaron ${nuevosDatos.length} registros correctamente.`);
                             closeImportModal()
-                            dispatch(fetchTorneos());
+                            dispatch(fetchAños());
                             setFileKey(prevKey => prevKey + 1);
                             setFileName(""); // Restablece el nombre del archivo después de la importación
                             setFileData(null); // Restablece los datos del archivo después de la importación
@@ -121,13 +122,13 @@ const Torneos = () => {
         if (selectedRows.length > 0) {
             setIsSaving(true);
             const deletePromises = selectedRows.map(row => 
-                Axios.post(`${URL}/admin/${eliminar}`, { id: row.id_torneo })
+                Axios.post(`${URL}/admin/${eliminar}`, { id: row.id_division })
             );
     
             toast.promise(
                 Promise.all(deletePromises)
                     .then(async () => {
-                        dispatch(fetchTorneos());
+                        dispatch(fetchCategorias());
                         closeDeleteModal();
                         dispatch(clearSelectedRows());
                         setFileKey(prevKey => prevKey + 1);
@@ -149,7 +150,7 @@ const Torneos = () => {
 
 
     useEffect(() => {
-        dispatch(fetchTorneos());
+        dispatch(fetchDivisiones());
         return () => {
             dispatch(clearSelectedRows());
         };
@@ -170,7 +171,7 @@ const Torneos = () => {
                         descripcion
                     }).then(() => {
                         toast.success(`${singular.charAt(0).toUpperCase() + singular.slice(1)} registrada correctamente.`);
-                        dispatch(fetchTorneos());
+                        dispatch(fetchDivisiones());
                         closeCreateModal();
                         setNombre("");
                         setDescripcion("");
@@ -273,7 +274,7 @@ const Torneos = () => {
                         <LuUpload />
                         <p>Importar</p>
                     </Button>
-                    <Button bg="export" color="white" onClick={handleExport} disabled={torneosList.length === 0}>
+                    <Button bg="export" color="white" onClick={handleExport} disabled={divisionesList.length === 0}>
                         <LuDownload />
                         <p>Descargar</p>
                     </Button>
@@ -281,7 +282,7 @@ const Torneos = () => {
                     
                 
             </ActionsCrud>
-            <Table data={torneosList} dataColumns={dataTorneosColumns} arrayName={singular.charAt(0).toUpperCase() + singular.slice(1)} id_={id} />
+            <Table data={divisionesList} dataColumns={dataDivisionesColumns} arrayName={singular.charAt(0).toUpperCase() + singular.slice(1)} id_={id} />
             {
                 isCreateModalOpen && <>
                     <ModalCreate initial={{ opacity: 0 }}
@@ -405,4 +406,4 @@ const Torneos = () => {
     );
 };
 
-export default Torneos;
+export default Divisiones;

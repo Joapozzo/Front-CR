@@ -31,6 +31,7 @@ import ProtectedRoute from '../Auth/ProtectedRoute';
 import { AuthProvider } from '../Auth/AuthContext';
 import PrivateLayoutPlanillero from '../components/Layout/LayoutPlanillero';
 import MorePlanillero from '../pages/More/MorePlanillero';
+import Divisiones from '../pages/Administrador/Divisiones/Divisiones';
 
 const Routes = () => {
     return (
@@ -54,11 +55,13 @@ const Routes = () => {
                             <Route path='/admin/temporadas/sedes' element={<LayoutAdmin> <Sedes/> </LayoutAdmin>} />
                             <Route path='/admin/temporadas/años' element={<LayoutAdmin> <Años/> </LayoutAdmin>} />
                             <Route path='/admin/temporadas/torneos' element={<LayoutAdmin> <Torneos/> </LayoutAdmin>} />
+                            <Route path='/admin/temporadas/divisiones' element={<LayoutAdmin> <Divisiones/> </LayoutAdmin>} />
                             <Route path='/admin/usuarios' element={<LayoutAdmin> <Usuarios/> </LayoutAdmin>} />
                             <Route path='/admin/jugadores' element={<LayoutAdmin> <Jugadores/> </LayoutAdmin>} />
                             <Route path='/admin/equipos' element={<LayoutAdmin> <Equipos/> </LayoutAdmin>} />
                             <Route path='/admin/partidos' element={<LayoutAdmin> <Partidos/> </LayoutAdmin>} />
                             <Route path='/admin/dashboard' element={<LayoutAdmin> <Admin/> </LayoutAdmin>} />
+                            
                         </Route>
 
                         {/* Planillero */}

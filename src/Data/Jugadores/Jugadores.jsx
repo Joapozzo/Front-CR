@@ -1,6 +1,6 @@
 export const dataJugadoresColumns = [
     { field: 'dni', header: 'DNI' },
-    { field: 'nombre', header: 'Nombre' },
+    { field: 'jugador', header: 'Nombre' },
     { field: 'posicion', header: 'Posición' },
     { field: 'equipo', header: 'Equipo' }
 ];

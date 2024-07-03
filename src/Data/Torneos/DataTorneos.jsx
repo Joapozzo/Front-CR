@@ -1,5 +1,5 @@
 export const dataTorneosColumns = [
-    { field: "nombre", header: "Nombre" },
+    { field: "nombre", header: "Torneo" },
     { field: "descripcion", header: "Descripción" }
   ];
   

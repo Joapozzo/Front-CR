@@ -10,6 +10,12 @@ export const ButtonWrapper = styled.button`
     color: ${({ color }) => `var(--${color})`};
     border: none;
     border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px
+    font-size: 14px;
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+    pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+    
+    &:hover {
+        opacity: ${({ disabled }) => (disabled ? 0.9 : 0.9)};
+    }
 ` 
