@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-
 import { MatchStatsWrapper } from '../../MatchStats/MatchStatsStyles';
 import Section from '../../../components/Section/Section';
 import CardFinalPartido from '../../../components/Stats/CardFinalPartido/CardFinalPartido';
@@ -17,16 +16,22 @@ import { setCurrentStateModal, toggleHiddenModal, toggleStateMatch } from '../..
 import ModalConfirmation from '../../../components/Stats/Incidents/ModalConfirmation.jsx';
 import InputLong from '../../../components/UI/Input/InputLong.jsx';
 import JugadoresEventuales from '../../../components/FormacionesPlanilla/JugadoresEventuales/JugadoresEventuales.jsx';
+import { useLocation } from 'react-router-dom';
 
 const Planilla = () => {
+    const location = useLocation();
+    
+    const searchParams = new URLSearchParams(location.search);
+    const partidoId = searchParams.get('id');
 
     const dispatch = useDispatch();
-    const estadoPartido = useSelector((state) => state.planillero.timeMatch.matchState)
+    const estadoPartido = useSelector((state) => state.planillero.timeMatch.matchState);
+    const partidos = useSelector((state) => state.partidos.data);
+    const partido = partidos.find(p => p.id_partido === parseInt(partidoId));
 
     const match = useSelector((state) => state.match);
     const [canStartMatch, setCanStartMatch] = useState(false);
 
-    //Funcion para validar que haya al menos 5 jugadores registrados en el partido
     useEffect(() => {
         const canStart = match.every(team => {
             const playersWithStatusTrue = team.Player.filter(player => player.status);
@@ -36,12 +41,11 @@ const Planilla = () => {
         setCanStartMatch(canStart);
     }, [match]);
 
-    //Manejar estados del partido
     const handleStartMatch = () => {
         if (canStartMatch) {
             if (estadoPartido === 'isStarted') {
-                dispatch(toggleHiddenModal())
-                dispatch(setCurrentStateModal('matchFinish'))
+                dispatch(toggleHiddenModal());
+                dispatch(setCurrentStateModal('matchFinish'));
             } else {
                 dispatch(toggleStateMatch());
             }
@@ -50,25 +54,24 @@ const Planilla = () => {
         }
     }
 
-    //Toast para mensajes
     const handleToastStartMatch = () => {
         if (canStartMatch) {
-                toast.success('Partido comenzado', {
+            toast.success('Partido comenzado', {
                 duration: 4000,
-            })
+            });
         }
     }
-    
+
     return (
         <PlanillaContainerStyled className='container'>
             <MatchStatsWrapper className='wrapper'>
-                <Cronometro/>
+                <Cronometro />
                 <Section>
                     <h2>Ficha de partido</h2>
-                    <CardFinalPartido/>
+                    {<CardFinalPartido idPartido={partidoId} />}
                 </Section>
-                <FormacionesPlanilla/>
-                <Incidents/>
+                <FormacionesPlanilla />
+                <Incidents />
 
                 <InputDescContainer>
                     <p>Escriba aquí alguna observacion o descripción del partido</p>
@@ -81,17 +84,17 @@ const Planilla = () => {
                 <ButtonContainer>
                     {estadoPartido === null && (
                         <ButtonMatch className='started' 
-                        onClick={() => {
-                            handleToastStartMatch()
-                            handleStartMatch()
-                        }}>
+                            onClick={() => {
+                                handleToastStartMatch();
+                                handleStartMatch();
+                            }}>
                             Comenzar Partido
                         </ButtonMatch>
                     )}
                     {estadoPartido === 'isFinish' && (
                         <ButtonMatch 
-                        className='finish'
-                        onClick={handleStartMatch}>
+                            className='finish'
+                            onClick={handleStartMatch}>
                             Partido Finalizado
                         </ButtonMatch>
                     )}
@@ -102,23 +105,22 @@ const Planilla = () => {
                     )}
                     {estadoPartido === 'finish' && (
                         <ButtonMatch 
-                        className='finish'
-                        onClick={handleStartMatch}>
+                            className='finish'
+                            onClick={handleStartMatch}>
                             Partido Finalizado
                         </ButtonMatch>
                     )}
                 </ButtonContainer>
                 
                 {/* Ventanas */}
-                <ActionConfirmed/>
-                <ActionAsisted/>
-                <ActionTime/>
-                <EditDorsal/>
-                <JugadoresEventuales/>
-                <ModalConfirmation/>
-
+                <ActionConfirmed />
+                <ActionAsisted />
+                <ActionTime />
+                <EditDorsal />
+                <JugadoresEventuales />
+                <ModalConfirmation />
             </MatchStatsWrapper>
-            <Toaster/>
+            <Toaster />
         </PlanillaContainerStyled>
     );
 }

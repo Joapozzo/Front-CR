@@ -73,7 +73,7 @@ const Equipos = () => {
     useEffect(() => {
         getEquipos();
         getCategorias()
-    }, []); // Ejecuta solo una vez cuando el componente se monta
+    }, []);
 
     const openCreateModal = () => {
         setIsCreateModalOpen(true);

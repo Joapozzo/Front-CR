@@ -5,7 +5,7 @@ import { URL } from '../../utils/utils';
 
 // Crear una acción asíncrona para obtener los años
 export const fetchPartidos = createAsyncThunk('partidos/fetchPartidos', async () => {
-    const response = await Axios.get(`${URL}/admin/get-partidos`);
+    const response = await Axios.get(`${URL}/user/get-partidos`);
     return response.data;
 });
 

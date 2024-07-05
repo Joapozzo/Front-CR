@@ -5,7 +5,7 @@ import { URL } from '../../utils/utils';
 
 // Crear una acción asíncrona para obtener los años
 export const fetchEquipos = createAsyncThunk('equipos/fetchEquipos', async () => {
-    const response = await Axios.get(`${URL}/admin/get-equipos`);
+    const response = await Axios.get(`${URL}/user/get-equipos`);
     return response.data;
 });
 

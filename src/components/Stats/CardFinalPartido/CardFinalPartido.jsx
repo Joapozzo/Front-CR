@@ -5,9 +5,25 @@ import EscudoPuraQuimica from '/Escudos/pura-quimica.png';
 import { HiLifebuoy } from "react-icons/hi2";
 import { useSelector } from 'react-redux';
 
-const CardFinalPartido = () => {
+const CardFinalPartido = ({ idPartido }) => {
+    //Traer partidos
+    const partidos = useSelector((state) => state.partidos.data);
+    const partido = partidos.find((partido) => partido.id_partido === parseInt(idPartido));
+    console.log(partido);
+    
+    //Traer equipos
+    const equipos = useSelector((state) => state.equipos.data)
+    const escudosEquipos = (idEquipo) => {
+        const equipo = equipos.find((equipo) => equipo.id_equipo === idEquipo);
+        return equipo ? equipo.img : null;
+    };
 
-    //Logica conteo goles
+    const nombreEquipos = (idEquipo) => {
+        const equipo = equipos.find((equipo) => equipo.id_equipo === idEquipo);
+        return equipo ? equipo.nombre : null;
+    };
+
+    // Lógica conteo goles
     const actions = useSelector((state) => state.planillero.planilla.actions);
     const [goalLocal, setGoalLocal] = useState(0);
     const [goalVisit, setGoalVisit] = useState(0);
@@ -28,19 +44,19 @@ const CardFinalPartido = () => {
         setGoalVisit(visitGoals);
     }, [actions]);
 
-    //Logica manejo estado partido
+    // Lógica manejo estado partido
     const matchState = useSelector((state) => state.planillero.timeMatch.matchState);
 
     return (
         <CardPartidoWrapper>
             <CardPartidoTitles>
-                <h3>Serie A - Apertura 2024</h3>
-                <p>Sabado 03/02 | Fecha 1 - Cancha 1</p>
+                <h3>{`${partido.division} - ${partido.torneo} ${partido.año}`}</h3>
+                <p>{`${partido.dia_nombre} ${partido.dia_numero}/${partido.mes}`} | {`Fecha ${partido.jornada} - ${partido.cancha}`}</p>
             </CardPartidoTitles>
             <CardPartidoTeams>
                 <CardPartidoTeam>
-                    <img src={EscudoCelta} alt="Escudo Celta de Vino" />
-                    <h4>Celta de Vino</h4>
+                <img src={`/Escudos/${escudosEquipos(partido.id_equipoLocal)}`} alt={`${nombreEquipos(partido.id_equipoLocal)}`} />
+                    <h4>{`${nombreEquipos(partido.id_equipoLocal)}`}</h4>
                 </CardPartidoTeam>
                 <CardPartidoInfo>
                     <h4>{goalLocal}-{goalVisit}</h4>
@@ -55,8 +71,8 @@ const CardFinalPartido = () => {
 
                 </CardPartidoInfo>
                 <CardPartidoTeam>
-                    <img src={EscudoPuraQuimica} alt="Escudo Pura Química" />
-                    <h4>Pura Química</h4>
+                    <img src={`/Escudos/${escudosEquipos(partido.id_equipoVisita)}`} alt={`${nombreEquipos(partido.id_equipoVisita)}`} />
+                    <h4>{`${nombreEquipos(partido.id_equipoVisita)}`}</h4>
                 </CardPartidoTeam>
             </CardPartidoTeams>
             <CardPartidoDivider />

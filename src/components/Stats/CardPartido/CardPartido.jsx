@@ -1,85 +1,79 @@
-import React from 'react'
-import { CardPartidoTitles, CardPartidoWrapper, CardPartidoTeams, CardPartidoTeam, CardPartidoInfo, CardPartidoStats, CardPartidoDivider } from './CardPartidoStyles'
-import EscudoCelta from '/Escudos/celta-de-vino.png'
-import EscudoPuraQuimica from '/Escudos/pura-quimica.png'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { CardPartidoTitles, CardPartidoWrapper, CardPartidoTeams, CardPartidoTeam, CardPartidoInfo, CardPartidoStats, CardPartidoDivider } from './CardPartidoStyles';
+import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+const CardPartido = ({ finished, observer, partido }) => {
+    const equipos = useSelector((state) => state.equipos.data)
 
-const CardPartido = ({finished, observer}) => {
+    const escudosEquipos = (idEquipo) => {
+        const equipo = equipos.find((equipo) => equipo.id_equipo === idEquipo);
+        return equipo ? equipo.img : null;
+    };
+
+    const nombreEquipos = (idEquipo) => {
+        const equipo = equipos.find((equipo) => equipo.id_equipo === idEquipo);
+        return equipo ? equipo.nombre : null;
+    };
+
     return (
         <CardPartidoWrapper> 
             <CardPartidoTitles>
-                
-                <h3>Serie A - Apertura 2024</h3>
+                <h3>{`${partido.division} - ${partido.torneo} ${partido.año}`}</h3>
                 {finished ? (
-                        <>
-                            <p>Sabado 03/02 | Fecha 1 - Cancha 1</p>
-                        </>
-                    ) : (
-                        <>
-                            <p>Fecha 1 - Cancha 1</p>
-                        </>
-                    )}
+                    <p>{partido.dia} | Fecha {partido.jornada} - Cancha {partido.cancha}</p>
+                ) : (
+                    <p>Fecha {partido.jornada} - {partido.cancha}</p>
+                )}
             </CardPartidoTitles>
             <CardPartidoTeams>
                 <CardPartidoTeam>
-                    <img src={EscudoCelta} />
-                    <h4>
-                        Celta de Vino
-                    </h4>
+                    <img src={`/Escudos/${escudosEquipos(partido.id_equipoLocal)}`} alt={`${nombreEquipos(partido.id_equipoLocal)}`} />
+                    <h4>{`${nombreEquipos(partido.id_equipoLocal)}`}</h4>
                 </CardPartidoTeam>
 
                 <CardPartidoInfo>
                     {finished ? (
                         <>
-                            <h4>4-2</h4>
+                            <h4>{partido.goles_local}-{partido.goles_visita}</h4>
                             <span>Final</span>
                         </>
                     ) : (
                         <>
-                            <h5>17:00</h5>
-                            <p>Sábado 05/04</p>
+                            <h5>{partido.hora}</h5>
+                            <p>{`${partido.dia_nombre} ${partido.dia_numero}/${partido.mes}`}</p>
                         </>
                     )}
                 </CardPartidoInfo>
 
                 <CardPartidoTeam>
-                    <img src={EscudoPuraQuimica} />
-                    <h4>
-                        Pura Química
-                    </h4>
+                    <img src={`/Escudos/${escudosEquipos(partido.id_equipoVisita)}`} alt={`${nombreEquipos(partido.id_equipoVisita)}`} />
+                    <h4>{`${nombreEquipos(partido.id_equipoVisita)}`}</h4>
                 </CardPartidoTeam>
-                
             </CardPartidoTeams>
-            {
-                finished ? (
+            {finished ? (
+                <>
+                    <CardPartidoDivider/>
+                    <CardPartidoStats>
+                        <NavLink to="/stats-match">Ver estadísticas completas</NavLink>
+                    </CardPartidoStats>
+                </>
+            ) : (
+                observer && (
                     <>
                         <CardPartidoDivider/>
                         <CardPartidoStats>
-                            <NavLink to="/stats-match">
-                                Ver estadísticas completas
-                            </NavLink>
+                        <NavLink 
+                            to={`/planillero/planilla?id=${partido.id_partido}`}
+                        >
+                            Ir a planillar partido
+                        </NavLink>
                         </CardPartidoStats>
                     </>
-                ) : (
-                    observer ? (
-                        <>
-                        <CardPartidoDivider/>
-                        <CardPartidoStats>
-                            <NavLink to="/planillero/planilla">
-                                Ir a planillar partido
-                            </NavLink>
-                        </CardPartidoStats>
-                    </>
-                    ) : (
-                        <>
-                        </>
-                    )
                 )
-            }
-
+            )}
         </CardPartidoWrapper>
-    )
+    );
 }
 
-export default CardPartido
+export default CardPartido;

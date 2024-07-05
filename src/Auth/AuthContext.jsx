@@ -13,6 +13,7 @@ axios.defaults.withCredentials = true;
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [userId, setUserId] = useState(null);
     const [userRole, setUserRole] = useState(null);
     const [userName, setUserName] = useState(null);
     const [showWelcomeToast, setShowWelcomeToast] = useState(false);
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
                     setIsAuthenticated(true);
                     setUserRole(response.data.usuario.id_rol);
                     setUserName(response.data.usuario.nombre);
+                    setUserId(response.data.usuario.id_usuario)
                     setShowWelcomeToast(true);
                 }
             } catch (error) {
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userRole, userName, showWelcomeToast, setShowWelcomeToast, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ isAuthenticated, userId, userRole, userName, showWelcomeToast, setShowWelcomeToast, setIsAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );
