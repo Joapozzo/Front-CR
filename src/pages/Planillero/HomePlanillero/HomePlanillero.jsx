@@ -36,7 +36,6 @@ const HomePlanillero = () => {
     // Consumir de la bd los equipos y partidos
     useEffect(() => {
         dispatch(fetchPartidos());
-        dispatch(fetchEquipos());
     }, [dispatch]);
 
     const partidosFiltrados = partidos.filter((partido) => {return partido.id_planillero === userId})

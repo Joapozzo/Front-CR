@@ -4,7 +4,7 @@ import ActionsCrud from '../../../components/ActionsCrud/ActionsCrud';
 import { ActionsCrudButtons } from '../../../components/ActionsCrud/ActionsCrudStyles';
 import Button from '../../../components/Button/Button';
 import { FiPlus } from 'react-icons/fi';
-import { IoTrashOutline } from 'react-icons/io5';
+import { IoShieldHalf, IoTrashOutline } from 'react-icons/io5';
 import { LuDownload, LuUpload } from 'react-icons/lu';
 import Table from '../../../components/Table/Table';
 import { ContentTitle } from '../../../components/Content/ContentStyles';
@@ -26,6 +26,7 @@ import { fetchAños } from '../../../redux/ServicesApi/añosSlice';
 import { fetchJugadores } from '../../../redux/ServicesApi/jugadoresSlice';
 import { fetchEquipos } from '../../../redux/ServicesApi/equiposSlice';
 import { dataJugadoresColumns } from '../../../Data/Jugadores/Jugadores';
+import Select from '../../../components/Select/Select';
 
 const Jugadores = () => {
     const dispatch = useDispatch();
@@ -147,10 +148,9 @@ const Jugadores = () => {
         }
     };
 
-
     useEffect(() => {
         dispatch(fetchJugadores());
-        dispatch(fetchEquipos());
+        dispatch(fetchEquipos())
         return () => {
             dispatch(clearSelectedRows());
         };
@@ -330,6 +330,7 @@ const Jugadores = () => {
                                     <Select 
                                         data={equiposList}
                                         placeholder="Seleccionar equipo"
+                                        icon={<IoShieldHalf className='icon-select' />}
                                     >
                                     </Select>
                                 </ModalFormInputContainer>

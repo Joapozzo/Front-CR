@@ -44,6 +44,7 @@ export const AsideUser = styled.div`
     gap: 10px;
     img {
         width: 20px;
+        border-radius: 50%;
     }
 
     &i,svg{

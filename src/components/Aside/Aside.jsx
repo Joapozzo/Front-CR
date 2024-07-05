@@ -14,11 +14,13 @@ import UserImg from '../../assets/user-default.png'
 import { useLocation } from 'react-router-dom';
 import { TbShirtSport } from "react-icons/tb";
 import { useAuth } from '../../Auth/AuthContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLogCurrentUser } from '../../redux/user/userSlice';
 import axios from 'axios';
 import { URL } from '../../utils/utils';
 import toast, { Toaster } from 'react-hot-toast';
+import { fetchUsuarios } from '../../redux/ServicesApi/usuariosSlice';
+
 
 const Aside = ({className}) => {
     const dispatch = useDispatch()
@@ -26,6 +28,9 @@ const Aside = ({className}) => {
     
     const [showSubMenu, setShowSubMenu] = useState(false);
     const isActiveTemporadas = location.pathname.includes("/admin/temporadas");
+
+    const usuarios = useSelector((state) => state.usuarios.data)
+    
 
     const toggleSubMenu = () => {
         setShowSubMenu(!showSubMenu);
@@ -53,9 +58,16 @@ const Aside = ({className}) => {
         }
     };
 
+    const imgUsuarios = (idUsuario) => {
+        const usuario = usuarios.find((usuario) => usuario.id_usuario === idUsuario)
+        return usuario ? usuario.img : null;
+    };
+
+
     //Mensaje bienvenida
-    const {userName, showWelcomeToast, setShowWelcomeToast} = useAuth()
+    const {userName, showWelcomeToast, setShowWelcomeToast, userId} = useAuth()
     useEffect(() => {
+        dispatch(fetchUsuarios())
         if (userName && showWelcomeToast) {
             toast(`Bienvenid@, administrador ${userName}`, {
                 icon: '👋',
@@ -80,7 +92,7 @@ const Aside = ({className}) => {
             </AsideHeader>
             <Divider color="gray-300" />
             <AsideUser>
-                <img src={UserImg} alt="" />
+                <img src={`/Usuarios/${imgUsuarios(userId)}`} />
                 <p>{userName}</p>
                 <IoIosLogOut onClick={closeSesion}/>
             </AsideUser>
